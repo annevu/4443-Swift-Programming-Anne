@@ -15,6 +15,7 @@ class SecondViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+/*
         // 1
         let location = CLLocationCoordinate2D(
             latitude: 51.50007773,
@@ -31,11 +32,30 @@ class SecondViewController: UIViewController {
         annotation.title = "Big Ben"
         annotation.subtitle = "London"
         mapView.addAnnotation(annotation)
+*/
     }
 
     override func viewWillAppear(animated: Bool) {
         // Get a reference to the point data from the custom tab bar controller.
         let currentPoint = (self.tabBarController as CustomTabBarController).currentPoint
+        
+        //Update the map
+        // 1
+        let location = CLLocationCoordinate2D(
+            latitude: currentPoint.lat,
+            longitude: currentPoint.lon
+        )
+        // 2
+        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let region = MKCoordinateRegion(center: location, span: span)
+        mapView.setRegion(region, animated: true)
+        
+        //make the point
+        let annotation = MKPointAnnotation()
+        annotation.setCoordinate(location)
+        annotation.title = "Apple"
+        mapView.addAnnotation(annotation)
+        
         
     }
     

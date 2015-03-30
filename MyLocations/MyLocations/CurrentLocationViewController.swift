@@ -14,7 +14,6 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     let locationManager = CLLocationManager()
     
     var location: CLLocation?
-    
 
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var latitudeLabel: UILabel!
@@ -62,7 +61,10 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     override func viewWillAppear(animated: Bool) {
         // Get a reference to the point data from the custom tab bar controller.
         let currentPoint = (self.tabBarController as CustomTabBarController).currentPoint
-        
+        if let location = location{
+            currentPoint.lat = location.coordinate.latitude
+            currentPoint.lon = location.coordinate.longitude
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -87,10 +89,15 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     }
     
     func updateLabels(){
+        //since viewWillAppear is only called when you moved to a tab it seems, need to set the currentPoint when we know the location
+        let currentPoint = (self.tabBarController as CustomTabBarController).currentPoint
         if let location = location{
             latitudeLabel.text = String(format: "%.8f", location.coordinate.latitude)
             longitudeLabel.text = String(format: "%.8f", location.coordinate.longitude)
+            currentPoint.lat = location.coordinate.latitude
+            currentPoint.lon = location.coordinate.longitude
         }
+        
     }
     
 }
