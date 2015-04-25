@@ -26,6 +26,9 @@ class ViewController: UIViewController , ColorTableViewControllerDelegate{
     
     var myColors:Colors = Colors()
     
+    var xpos: CGFloat = 0
+    var ypos: CGFloat = 500
+    var historyCount = 0
     @IBOutlet weak var chosenColorLabel: UILabel!
     @IBOutlet weak var colorItemsLabel: UILabel!
     @IBOutlet weak var colorViewerLabel: UILabel!
@@ -134,6 +137,18 @@ class ViewController: UIViewController , ColorTableViewControllerDelegate{
         greenSlider.setValue(g, animated: true)
         blueSlider.setValue(b, animated: true)
         */
+        xpos += 50
+        historyCount++
+        if historyCount % 7 == 0
+        {
+            ypos += 50
+            xpos = 50
+        }
+        var label = UILabel(frame: CGRectMake(xpos, ypos, 40, 40))
+        label.backgroundColor = labelColor
+        
+        self.view.addSubview(label)
+        
         
     }
     
