@@ -27,7 +27,7 @@ class FourthViewController: UIViewController {
     var timer : NSTimer? = nil
     
     var addCount = 0
-    var newOrder = [UILabel]()
+    
 
     @IBOutlet weak var buttonAdd: UIBarButtonItem!
     @IBOutlet weak var buttonUndo: UIBarButtonItem!
@@ -108,27 +108,27 @@ class FourthViewController: UIViewController {
         if motion == .MotionShake {
             println("did shake")
             reorderColors()
-            self.labelContainer.append(newOrder.removeAtIndex(Int(arc4random_uniform(UInt32(self.newOrder.count)))))
         }
     }
     
    
     func reorderColors(){
+        
         println("in reorder\(self.labelContainer.count)")
         
-        newOrder.removeAll(keepCapacity: false)
+        var newOrder = [UILabel]()
         
         while self.labelContainer.count > 0 {
             newOrder.append(self.labelContainer.removeAtIndex(Int(arc4random_uniform(UInt32(self.labelContainer.count)))))
         }
-        println("in reorder neworder\(self.newOrder.count)")
+        //println("in reorder neworder\(newOrder.count)")
         self.labelContainer.removeAll(keepCapacity: false)
         
         for view in self.view.subviews {
             view.removeFromSuperview()
         }
         //Call readdColor ever .15 sec
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.10, target: self, selector: "readdColor", userInfo: nil, repeats: true);
+        timer = NSTimer.scheduledTimerWithTimeInterval(0.10, target: self, selector: "readdColor", userInfo: newOrder, repeats: true);
         
         
 //        for label in newOrder{
@@ -141,15 +141,15 @@ class FourthViewController: UIViewController {
     
     
     func readdColor() {
-        println("newOrder \(self.newOrder.count)")
-        var col = self.newOrder[addCount]
+        var newOrder = timer?.userInfo as [UILabel]
+        //println("newOrder \(newOrder.count)")
+        var col = newOrder[addCount]
         self.view.addSubview(col)
         addCount++
         self.labelContainer.append(col)
-        if (addCount == self.newOrder.count)
+        if (addCount == newOrder.count)
         {
             timer?.invalidate()
-            timer = nil
             addCount = 0
         }
         
